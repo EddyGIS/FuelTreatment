@@ -1,3 +1,16 @@
+#
+#-------------------------------------------------------------------------------
+# Name:        XYInsert_Rename
+# Purpose:
+#
+# Author:      Edward Graham
+#
+# Created:     15/07/2025
+# Copyright:   (c) Edward Graham 2025
+# Licence:     <your licence>
+#-------------------------------------------------------------------------------
+#
+#
 import os
 import shutil
 import pandas as pd
@@ -39,10 +52,13 @@ with open(log_file_path, mode='w', newline='', encoding='utf-8') as log_file:
         origin_folder= str(row["Origin"])
         source_path  = os.path.join(origin_folder, orig_name)
 
-        # Build target filename
-        new_raw      = str(row["New_File_Name"])
-        new_name     = new_raw if new_raw.lower().endswith(".jpg") else new_raw + ".jpg"
-        target_path  = os.path.join(directory_path, new_name)
+        # Build target filename (allowing .jpg or .jpeg inputs)
+        new_raw  = str(row["New_File_Name"])
+        if new_raw.lower().endswith((".jpg", ".jpeg")):
+            new_name = new_raw
+        else:
+            new_name = new_raw + ".jpg"
+        target_path = os.path.join(directory_path, new_name)
 
         # Check source exists
         if not os.path.isfile(source_path):
